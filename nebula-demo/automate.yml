@@ -1,0 +1,41 @@
+crosscompute: 0.9.3
+
+name: Nebula Test
+description: Improve health, safety, quality of life in our communities
+
+version: 0.1.0
+
+input:
+  variables:
+    - id: latitude
+      view: number
+      path: variables.dictionary
+    - id: longitude
+      view: number
+      path: variables.dictionary
+    - id: features
+      view: text
+      path: variables.dictionary
+
+  
+output:
+  variables:
+    - id: latitude
+      view: number
+      path: variables.dictionary
+    - id: longitude
+      view: number
+      path: variables.dictionary
+    - id: features
+      view: text
+      path: variables.dictionary
+
+
+  templates:
+    - path: templates/nebula-preview.md
+
+batches:
+  - folder: batches/standard
+
+scripts:
+  - command: cp {input_folder}/variables.dictionary {output_folder}/variables.dictionary

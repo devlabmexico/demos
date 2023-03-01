@@ -18,7 +18,39 @@
             function App() {
                 const [features, setFeatures] = $.React.useState({
                     type: "FeatureCollection",
-                    features: []
+                    features: [
+                        {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            -122.47042625427254,
+                                            37.77554273797601
+                                        ],
+                                        [
+                                            -122.48141258239752,
+                                            37.764144403796394
+                                        ],
+                                        [
+                                            -122.43832557678228,
+                                            37.764822925247095
+                                        ],
+                                        [
+                                            -122.43678062438968,
+                                            37.776356837469876
+                                        ],
+                                        [
+                                            -122.47042625427254,
+                                            37.77554273797601
+                                        ]
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
                 });
                 const [mode, setMode] = $.React.useState(() => $.Nebula.Modes.DrawPolygonMode);
                 const [selectedFeatureIndexes] = $.React.useState([]);
@@ -30,6 +62,7 @@
                     mode,
                     selectedFeatureIndexes,
                     onEdit: ({ updatedData }) => {
+                        console.log(updatedData);
                         setFeatures(updatedData);
                     }
                 });
