@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>React CDN Demo</title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="dist/index_bundle.js"></script>
+        
+        <script>
+            const MAPBOX_ACCESS_TOKEN = "pk.eyJ1Ijoiem9layIsImEiOiJjaWc0b2ZmaXozMTlzdXNtNXR4bzF3bWI3In0.Qiyq_HteQro9bmzovEa-3w";
+            const initialViewState = {
+                longitude: -122.43,
+                latitude: 37.775,
+                zoom: 12
+            };
+
+            function App() {
+                const [features, setFeatures] = $.React.useState({
+                    type: "FeatureCollection",
+                    features: []
+                });
+                const [mode, setMode] = $.React.useState(() => $.Nebula.Modes.DrawPolygonMode);
+                const [selectedFeatureIndexes] = $.React.useState([]);
+
+        
+                
+                const layer = new $.Nebula.Layers.EditableGeoJsonLayer({
+                    data: features,
+                    mode,
+                    selectedFeatureIndexes,
+                    onEdit: ({ updatedData }) => {
+                        setFeatures(updatedData);
+                    }
+                });
+
+                return $.React.createElement("div", null,
+                    $.React.createElement($.Nebula.DeckGL, {
+                        initialViewState: initialViewState,
+                        controller: {
+                            doubleClickZoom: false
+                        },
+                        layers: [layer],
+                        getCursor: layer.getCursor.bind(layer)
+
+                    },
+                        $.React.createElement($.StaticMap, {
+                            mapboxAccessToken: MAPBOX_ACCESS_TOKEN,
+                            mapStyle:"mapbox://styles/mapbox/streets-v9"
+                        })
+                    ),
+                    $.React.createElement("div", {
+                        style: { position: "absolute", top: 0, right: 0, color: "white" }
+                    }, 
+                        $.React.createElement("button", {
+                            onClick: () => setMode(() => $.Nebula.Modes.DrawLineStringMode),
+                            style: { background: mode === $.Nebula.Modes.DrawLineStringMode ? "#3090e0" : null }
+                        }, "Line"),
+        
+                        $.React.createElement("button", {
+                            onClick: () => setMode(() => $.Nebula.Modes.DrawPolygonMode),
+                            style: { background: mode === $.Nebula.Modes.DrawPolygonMode ? "#3090e0" : null }
+                        }, "Polygon")
+                    )
+                )
+            }
+
+            var container = document.getElementById('root');
+            var root = $.ReactDOM.createRoot(container);
+            root.render($.React.createElement(App, null));
+        </script>
+    </body>
+</html>
